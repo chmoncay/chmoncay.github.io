@@ -42,12 +42,39 @@
             border-radius: 5px;
             display: none;
         }
+        #receivedMessages {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+            border-radius: 5px;
+            max-width: 500px;
+            text-align: left;
+        }
+        #receivedMessages h3 {
+            margin-top: 0;
+            font-size: 14px;
+        }
+        .message-item {
+            padding: 8px;
+            margin: 5px 0;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            font-size: 12px;
+            word-wrap: break-word;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <button id="sendMessageBtn">Send Message</button>
         <div id="messageDisplay"></div>
+        <div id="receivedMessages">
+            <h3>Received Messages from Parent:</h3>
+            <div id="messagesList"></div>
+        </div>
     </div>
 
     <script>
@@ -67,6 +94,24 @@
             messageDisplay.style.display = 'block';
             
             console.log('Message sent to parent window');
+        });
+        
+        // Listen for messages from the parent window
+        window.addEventListener('message', function(event) {
+            console.log('Received message from parent:', event);
+            
+            const messagesList = document.getElementById('messagesList');
+            const messageItem = document.createElement('div');
+            messageItem.className = 'message-item';
+            
+            const timestamp = new Date().toLocaleString();
+            messageItem.innerHTML = `
+                <strong>Time:</strong> ${timestamp}<br>
+                <strong>Origin:</strong> ${event.origin}<br>
+                <strong>Data:</strong> ${JSON.stringify(event.data, null, 2)}
+            `;
+            
+            messagesList.insertBefore(messageItem, messagesList.firstChild);
         });
     </script>
 </body>
