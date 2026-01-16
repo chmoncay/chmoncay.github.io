@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Message</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            text-align: center;
+        }
+        button {
+            padding: 15px 30px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button:active {
+            background-color: #004085;
+        }
+        #messageDisplay {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            border-radius: 5px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <button id="sendMessageBtn">Send Message to Parent</button>
+        <div id="messageDisplay"></div>
+    </div>
+
+    <script>
+        document.getElementById('sendMessageBtn').addEventListener('click', function() {
+            const timestamp = new Date().toISOString();
+            
+            // Send a message to the parent window
+            window.parent.postMessage({
+                type: 'greeting',
+                message: 'Hello from child window!',
+                timestamp: timestamp
+            }, '*');
+            
+            // Display the confirmation message
+            const messageDisplay = document.getElementById('messageDisplay');
+            messageDisplay.textContent = `Post message sent at ${timestamp}`;
+            messageDisplay.style.display = 'block';
+            
+            console.log('Message sent to parent window');
+        });
+    </script>
+</body>
+</html>
