@@ -17,6 +17,11 @@
         .container {
             text-align: center;
         }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
         button {
             padding: 15px 30px;
             font-size: 16px;
@@ -32,6 +37,15 @@
         }
         button:active {
             background-color: #004085;
+        }
+        #closeBtn {
+            background-color: #6c757d;
+        }
+        #closeBtn:hover {
+            background-color: #5a6268;
+        }
+        #closeBtn:active {
+            background-color: #545b62;
         }
         #messageDisplay {
             margin-top: 20px;
@@ -69,7 +83,10 @@
 </head>
 <body>
     <div class="container">
-        <button id="sendMessageBtn">Send Message</button>
+        <div class="button-group">
+            <button id="sendMessageBtn">Send Message</button>
+            <button id="closeBtn">Close Window</button>
+        </div>
         <div id="messageDisplay"></div>
         <div id="receivedMessages">
             <h3>Received Messages from Parent:</h3>
@@ -98,6 +115,11 @@
             } else {
                 console.error('No parent or opener window found');
             }
+        });
+        
+        // Close button handler
+        document.getElementById('closeBtn').addEventListener('click', function() {
+            window.close();
         });
         
         // Listen for messages from the parent window
