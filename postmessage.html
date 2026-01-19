@@ -80,20 +80,24 @@
     <script>
         document.getElementById('sendMessageBtn').addEventListener('click', function() {
             const timestamp = new Date().toISOString();
+            const message = `Hello from the iframe! - ${timestamp}`;
             
-            // Send a message to the parent window
-            window.parent.postMessage({
-                type: 'greeting',
-                message: 'Hello from child window!',
-                timestamp: timestamp
-            }, '*');
+            // Determine the target window (parent for iframe, opener for tabs)
+            const targetWindow = window.opener || window.parent;
             
-            // Display the confirmation message
-            const messageDisplay = document.getElementById('messageDisplay');
-            messageDisplay.textContent = `Post message sent at ${timestamp}`;
-            messageDisplay.style.display = 'block';
-            
-            console.log('Message sent to parent window');
+            // Send a message to the parent/opener window
+            if (targetWindow && targetWindow !== window) {
+                targetWindow.postMessage(message, '*');
+                
+                // Display the confirmation message
+                const messageDisplay = document.getElementById('messageDisplay');
+                messageDisplay.textContent = `Post message sent at ${timestamp}`;
+                messageDisplay.style.display = 'block';
+                
+                console.log('Message sent to host window:', message);
+            } else {
+                console.error('No parent or opener window found');
+            }
         });
         
         // Listen for messages from the parent window
